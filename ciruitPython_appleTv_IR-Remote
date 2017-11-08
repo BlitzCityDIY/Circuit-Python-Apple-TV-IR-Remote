@@ -1,0 +1,64 @@
+import array
+from digitalio import DigitalInOut, Direction, Pull
+import board
+import adafruit_irremote
+import time
+import pulseio
+
+OKAY = bytearray(b'\x88\x1e\xc5 ') #decoded [136, 30, 197, 32]
+LEFT = bytearray(b'\x88\x1eo ') #decoded [136, 30, 111, 32]
+RIGHT = bytearray(b'\x88\x1e\x9f ') #decoded [136, 30, 159, 32]
+UP = bytearray(b'\x88\x1e\xaf ') #decoded [136, 30, 175, 32]
+DOWN = bytearray(b'\x88\x1e\xcf ') #decoded [136, 30, 207, 32]
+MENU = bytearray(b'\x88\x1e? ') #decoded [136, 30, 63, 32]
+PLAY = bytearray(b'\x88\x1e\x05 ') #decoded [136, 30, 5, 32]
+remote = adafruit_irremote.GenericTransmit((9050, 4460), (550, 1650), (570, 575), 575)
+
+okay_button = DigitalInOut(board.D3)
+left_button = DigitalInOut(board.D4)
+right_button = DigitalInOut(board.D12)
+up_button = DigitalInOut(board.D6)
+down_button = DigitalInOut(board.D7)
+menu_button = DigitalInOut(board.D8)
+play_button = DigitalInOut(board.D9)
+
+okay_button.direction = Direction.INPUT
+left_button.direction = Direction.INPUT
+right_button.direction = Direction.INPUT
+up_button.direction = Direction.INPUT
+down_button.direction = Direction.INPUT
+menu_button.direction = Direction.INPUT
+play_button.direction = Direction.INPUT
+
+okay_button.pull = Pull.UP
+left_button.pull = Pull.UP
+right_button.pull = Pull.UP
+up_button.pull = Pull.UP
+down_button.pull = Pull.UP
+menu_button.pull = Pull.UP
+play_button.pull = Pull.UP
+
+with pulseio.PWMOut(board.D5, frequency = 38000, duty_cycle = 2 ** 15) as pwm:
+    pulse = pulseio.PulseOut(pwm)
+    while True:
+        if not okay_button.value:
+            remote.transmit(pulse, OKAY)
+            print("OKAY!")
+        if not left_button.value:
+            remote.transmit(pulse, LEFT)
+            print("LEFT!")
+        if not right_button.value:
+            remote.transmit(pulse, RIGHT)
+            print("RIGHT!")
+        if not up_button.value:
+            remote.transmit(pulse, UP)
+            print("UP!")
+        if not down_button.value:
+            remote.transmit(pulse, DOWN)
+            print("DOWN!")
+        if not menu_button.value:
+            remote.transmit(pulse, MENU)
+            print("MENU!")
+        if not play_button.value:
+            remote.transmit(pulse, PLAY)
+            print("PLAY!")
