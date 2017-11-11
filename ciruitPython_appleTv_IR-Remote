@@ -14,13 +14,13 @@ MENU = bytearray(b'\x88\x1e? ') #decoded [136, 30, 63, 32]
 PLAY = bytearray(b'\x88\x1e\x05 ') #decoded [136, 30, 5, 32]
 remote = adafruit_irremote.GenericTransmit((9050, 4460), (550, 1650), (570, 575), 575)
 
-okay_button = DigitalInOut(board.D3)
-left_button = DigitalInOut(board.D4)
-right_button = DigitalInOut(board.D12)
+okay_button = DigitalInOut(board.A2)
+left_button = DigitalInOut(board.A3)
+right_button = DigitalInOut(board.A4)
 up_button = DigitalInOut(board.D6)
-down_button = DigitalInOut(board.D7)
-menu_button = DigitalInOut(board.D8)
-play_button = DigitalInOut(board.D9)
+down_button = DigitalInOut(board.D9)
+menu_button = DigitalInOut(board.D10)
+play_button = DigitalInOut(board.D11)
 
 okay_button.direction = Direction.INPUT
 left_button.direction = Direction.INPUT
